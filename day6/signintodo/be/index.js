@@ -65,6 +65,27 @@ app.get("/dashboard", (req, res) => {
   res.sendFile(__dirname + "/src/dashboard.html");
 });
 
+app.delete("/delete-todo", (req, res) => {
+  let activeToken = req.query.activeToken;
+  let todoText = req.query.todo;
+  let user = data.find((user) => user.activeToken === activeToken);
+  if (user) {
+    // Find the index of the todo item that matches the todo text
+    const todoIndex = user.todos.findIndex(todo => todo.todo === todoText);
+    if (todoIndex !== -1) {
+      user.todos.splice(todoIndex, 1);
+      res.json("Todo deleted successfully");
+      console.log("Todo deleted successfully");
+    } else {
+      res.json("Todo not found");
+    }
+  } else {
+    res.json("Invalid active token");
+  }
+  console.log(user.todos);
+});
+
+
 app.get("/get-todos", (req, res) => {
   let activeToken = req.query.activeToken;
   let user = data.find((user) => user.activeToken === activeToken);
