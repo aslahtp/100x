@@ -1,0 +1,96 @@
+<html>
+  <head> 
+    <style>
+        .body {
+                font-family: Arial, sans-serif;
+            }
+            .form {
+                margin-bottom: 20px;
+            }
+            .ul {
+                /* list-style-type: none; */
+                display: flex;
+                flex-direction: column;
+                align-items: left;
+                justify-content: center;
+            }
+            .li {
+                margin-bottom: 10px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #f0f0f0;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                display: flex;
+                
+            }
+            .delete-button {
+                margin-left: 100px;
+                background-color: rgb(236, 138, 138);
+            }
+    </style>
+  </head>
+  <body onload="checkLoginTodo()">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      function checkLoginTodo() {
+        let username = localStorage.getItem("username");
+        let activeToken = localStorage.getItem("activeToken");
+        if (username && activeToken) {
+          document.getElementById("message").innerHTML = "Hello " + username;
+          axios.get("http://localhost:3000/get-todos?activeToken=" + activeToken).then((response) => {
+            console.log("Todos fetched successfully from be and "+JSON.stringify(response.data));
+            let todos = response.data;
+            let todoList = document.getElementById("todo-list");
+            todos.forEach(todo => {
+              let li = document.createElement("li");
+              li.innerHTML = `${todo.todo}<button class="delete-button" onclick="deleteTodo(this)">Delete</button> `;
+              todoList.appendChild(li);
+            });
+          });
+        } else {
+          window.location.href = "/signin";
+        }
+      }
+      function deleteTodo(event) {
+        let deleteButton = event.parentElement;
+        console.log(deleteButton.textContent.slice(0,-7));
+        axios.post("http://localhost:3000/delete-todo", {
+            todo: deleteButton.textContent.slice(0,-7)
+        }).then((response) => {
+            console.log("Todo deleted successfully from be and "+response.data);
+        });
+        
+      }
+      function addTodo(event) {
+        event.preventDefault();
+        let todoInput = document.getElementById("todo-input");
+        let todoList = document.getElementById("todo-list");
+        let todoText = todoInput.value;
+        if (todoText === "") return;
+        let li = document.createElement("li");
+        li.innerHTML = `${todoText}<button class="delete-button" onclick="deleteTodo(this)">Delete</button> `;
+        todoList.appendChild(li);
+        todoInput.value = "";
+        axios.post("http://localhost:3000/update-todo", {
+            todo: todoText,
+            activeToken: localStorage.getItem("activeToken"),
+            //allCompleted: false,
+           // completed: false,
+        }).then((response) => {
+            console.log("Todo added successfully from fe and "+response.data);
+        });
+      }
+    </script>
+    <div class="body">
+      <h1>Dashboard</h1>
+      <label id="message"></label><br /><br />
+      <form class="form" onsubmit="addTodo(event)">
+        <input type="text" placeholder="Add a new Todo" id="todo-input" />
+        <button type="submit" class="button">Add Todo</button>
+      </form>
+      <ul id="todo-list" class="ul"></ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<html>  
+    <head>  
+        <style>
+        </style>
+    </head>
+    <body onload="checkLoginTodo()">
+        <script src="script.js"></script>
+
+        <div class="body">
+            <h1>Todo List</h1>
+            <h3><label id="message"></label></h3>
+            <form>
+                <input type="text" placeholder="Todo" id="todo" />
+                <button type="submit" onclick="addTodo(event)">Add</button>
+            </form>
+            <ul id="todoList"></ul>
+        </div>
+    </body>
+</html>

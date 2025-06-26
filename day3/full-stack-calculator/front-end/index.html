@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .calculator-title {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .calculator-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .calculator-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .operations-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        .operation-btn {
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .operation-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .operation-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding: 24px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 16px;
+            border: 2px solid #e1e5e9;
+        }
+
+        .result-title {
+            color: #555;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .result-value {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e1e5e9;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-all;
+        }
+
+        .loading {
+            color: #667eea;
+        }
+
+        .error {
+            color: #dc3545;
+        }
+
+        @media (max-width: 480px) {
+            .calculator-container {
+                padding: 24px;
+                margin: 10px;
+            }
+            
+            .calculator-title {
+                font-size: 2rem;
+            }
+            
+            .operations-container {
+                gap: 8px;
+            }
+            
+            .operation-btn {
+                padding: 12px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1 class="calculator-title">Calculator</h1>
+        
+        <div class="input-group">
+            <label class="input-label" for="input1">First Number</label>
+            <input
+                type="number"
+                id="input1"
+                class="calculator-input"
+                placeholder="Enter first number"
+                step="any"
+            />
+        </div>
+
+        <div class="input-group">
+            <label class="input-label" for="input2">Second Number</label>
+            <input
+                type="number"
+                id="input2"
+                class="calculator-input"
+                placeholder="Enter second number"
+                step="any"
+            />
+        </div>
+
+        <div class="operations-container">
+            <button class="operation-btn" onclick="cal('+')">+</button>
+            <button class="operation-btn" onclick="cal('-')">−</button>
+            <button class="operation-btn" onclick="cal('*')">×</button>
+            <button class="operation-btn" onclick="cal('/')">/</button>
+        </div>
+
+        <div class="result-section">
+            <div class="result-title">Result</div>
+            <div class="result-value" id="lab1"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

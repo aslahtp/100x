@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <style>
+            .body {
+                font-family: Arial, sans-serif;
+            }
+        </style>
+    </head>
+    <body onload="checkLoginHome()">
+        <script src="script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <div class="body">
+            <h1>Sign Up</h1>
+            <form>
+                <input type="text" placeholder="Username" id="username" /> <br><br>
+                <input type="password" placeholder="Password" id="password" /> <br><br>
+                <button type="submit" onclick="signUp(event)">SignUp</button>
+                <button type="submit" onclick="signIn(event)">SignIn</button>
+                <br><br><label id="messageHome"></label>
+            </form>
+        </div>
+    </body>
+</html>
