@@ -1,0 +1,48 @@
+<html>  
+    <head>
+        <script>
+            function viewblogsofuser() {
+                let token = localStorage.getItem("token");
+                axios.get("http://localhost:3000/viewallblogs", {headers: {Authorization: `Bearer ${token}`}})
+                .then(response => {
+                    console.log(response.data);
+                    let blogs = response.data.blogsOfUser;
+                    let name = response.data.name;
+                    let message = document.getElementById("message");
+                    message.innerHTML = `<i>Welcome ${name}</i>`;
+                    let blogsDiv = document.getElementById("blogs");
+                    blogs.forEach(blog => {
+                        let blogDiv = document.createElement("div");
+                        blogDiv.innerHTML = `<a href="/viewblogidpage?blogid=${blog.id}">${blog.title}</a>`;
+                        blogsDiv.appendChild(blogDiv);
+                    });
+                })
+            }
+            function addblog() {
+                let title = document.getElementById("title").value;
+                let content = document.getElementById("content").value;
+                let token = localStorage.getItem("token");
+                axios.post("http://localhost:3000/addblog", {title, content}, {headers: {Authorization: `Bearer ${token}`}})
+                .then(response => {
+                    console.log(response.data);
+                    if(response.status === 200) {
+                        window.location.reload();
+                    }
+                    else {
+                        console.log(response.data);
+                    }
+                })
+                }
+        </script>
+    </head>
+    <body onload="viewblogsofuser()">
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+        <h1>Blogs</h1><hr>
+        <label id ="message"></label><br><br>
+        <input type="text" id="title" placeholder="Title"><br><br>
+        <input type="text" id="content" placeholder="Content"><br><br>
+        <button onclick="addblog()">Add Blog</button><br><br>
+        <div id="blogs"></div>
+        
+    </body>
+</html>

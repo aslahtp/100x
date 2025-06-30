@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <script>
+            function viewblogbyid() {
+                let url = new URL(window.location.href);
+                let blogid = url.searchParams.get("blogid");
+                let token = localStorage.getItem("token");
+                console.log(blogid);
+                axios.get(`http://localhost:3000/viewblogpage?blogid=${blogid}`, {headers: {Authorization: `Bearer ${token}`}})
+                .then(response => {
+                    if(response.status === 200) {
+                        console.log(response.data);
+                        let blog = response.data;
+                        let blogDiv = document.getElementById("blog");
+                        blogDiv.innerHTML = `<h1>${blog.title}</h1><p>${blog.content}</p>`;
+                    }
+                    else {
+                        console.log(response.data);
+                    }
+                })
+            }
+        </script>
+    </head>
+    <body onload="viewblogbyid()">
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+        <h1>My Blogs</h1><hr>
+        <div id="blog"></div>
+        <button onclick="editblog()">Edit Blog</button>
+        <button onclick="deleteblog()">Delete Blog</button>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <script>
+            function signup(event) {
+                event.preventDefault();
+                let name = document.getElementById("name").value;
+                let username = document.getElementById("username").value;
+                let password = document.getElementById("password").value;
+                
+                axios.post("http://localhost:3000/signup", {name, username, password})
+                .then(response => {
+                    if(response.status === 200) {
+                        window.location.href = "/signin";
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+
+        <h1>Sign Up</h1>
+        <form >
+            <input type="text" id="name" placeholder="Name"> <br><br>
+            <input type="text" id="username" placeholder="Username"><br><br>
+            <input type="password" id="password" placeholder="Password"><br><br>
+            <button type="submit" onclick="signup(event)">Signup</button>
+        </form>
+    </body>
+</html>
