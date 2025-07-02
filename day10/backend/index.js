@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("MONGO_URI  ");
+mongoose.connect("MONGO_URL");
 
 const userSchema = new mongoose.Schema({
     username: String,
