@@ -1,24 +1,38 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useSearchParams  } from "react-router";
+
+
 
 function Blogid() {
-    const [blog, setBlog] = useState(null);
+    const [searchParams] = useSearchParams();
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+
+    const id = searchParams.get("id");
+    console.log(id);
+
+
     useEffect(() => {
-        GetBlog();
+        getBlog();
     }, []);
-    function GetBlog() {
-        const id = new URLSearchParams(window.location.search).get("id");
-        console.log(id);
+
+    function getBlog() {
         axios.get(`http://localhost:3000/blog?id=${id}`, { headers: { token: localStorage.getItem("token") } })
             .then((res) => {
-                setBlog(res.data.blog);
+                setTitle(res.data.blog.title);
+                setContent(res.data.blog.content);
             })
     }
     return (
         <>
             <h1>Blog</h1>
-            <p>Title: {blog.title}</p>
-            <p>Content: {blog.content}</p>
+                <>
+                    <h2>{title}</h2>
+                    <p>{content}</p>
+                </>
+            
+            
         </>
     )
 }

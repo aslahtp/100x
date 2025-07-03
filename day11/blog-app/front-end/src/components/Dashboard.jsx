@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 function DashboardHeader() {
     return (
@@ -20,17 +21,20 @@ function DashboardInput({ handleCreateBlog }) {
     )
 }
 function DashboardBlogs({ blogs, handleDeleteBlog }) {
+    const navigate = useNavigate();
+
     return (
+
         <>
             <h2>My Blogs</h2>
             <div className="blog-container">
                 {blogs.map((blog, index) => (
                     <div key={index} className="blog-item">
-                    <h3><a href={`/blog?id=${blog.id}`}>{blog.title}</a>
-                        <button onClick={() => handleDeleteBlog(blog.id)}>Delete</button></h3>
+                        <h3><a onClick={() => navigate(`/blogid?id=${blog.id}`)}>{blog.title}</a>
+                            <button className="delete-button" onClick={() => handleDeleteBlog(blog.id)}>Delete</button></h3>
                     </div>
                 ))}
-        </div >
+            </div >
         </>
     )
 }
@@ -68,6 +72,8 @@ function Dashboard() {
             })
     }
 
+
+
     function handleDeleteBlog(id) {
         axios.delete(`http://localhost:3000/blog/${id}`, { headers: { token: localStorage.getItem("token") } })
             .then((res) => {
@@ -75,6 +81,7 @@ function Dashboard() {
                 setBlogs(blogs.filter((blog) => blog.id !== id));
             })
     }
+
 
 
     return (

@@ -34,17 +34,15 @@ app.get("/blogs", async (req, res) => {
 
 app.get("/blog", async (req, res) => {
     const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);
+    //console.log(decoded);
     const user = await User.findOne({ username: decoded.username });
-    const blog = user.blogs.find((blog) => blog.id === parseInt(req.query.id));
+    //console.log(user);
+    const blog = user.blogs.find((blog) => blog.id == parseInt(req.query.id));
+    //console.log(parseInt(req.query.id));
+    //console.log(blog);
     res.status(200).json({ blog });
 });
 
-app.get("/blog/:id", async (req, res) => {
-    const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);
-    const user = await User.find({ username: decoded.username });
-    const blog = user.blogs.find((blog) => blog.id === req.params.id);
-    res.status(200).json({ blog });
-});
 
 app.delete("/blog/:id", async (req, res) => {
     const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET);
@@ -61,7 +59,7 @@ app.post("/blog", async (req, res) => {
     const user = await User.findOne({ username: decoded.username });
     console.log(user);
     console.log(req.body);
-    const newBlog = {   
+    const newBlog = {
         id: Date.now(),
         title: req.body.title,
         content: req.body.content

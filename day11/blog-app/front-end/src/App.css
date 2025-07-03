@@ -10,6 +10,21 @@
   flex-direction: column;
 }
 
+.blog-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-button {
+  height: 50px;
+  justify-content: flex-end;
+  margin-left: 80px;
+  background-color: rgb(217, 169, 169);
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
 .blog-item {
   border: 1px solid #ccc;
   padding: 10px;
