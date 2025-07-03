@@ -1,8 +1,54 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+function TodoList({ todos, deleteTodo }) {
+    return (
+        <div id="todos" className="todos">
+            {todos.map(todo => (
+                <div className="wrap" key={todo.id}>
+                    <p className="todo">{todo.title}</p>
+                    <button
+                        className="buttonTodo"
+                        onClick={() => deleteTodo(todo.id)}
+                    >
+                        Delete
+                    </button>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+function TodoInput({ addTodo }) {
+    return (
+        <div>
+            <input id="todo-input" type="text" placeholder="Add a new todo" />
+            <button className="add-button" onClick={addTodo}>Add</button>
+        </div>
+    )
+}
+
+function TodoHeader() {
+    return (
+        <div>
+            <h1>Todo App</h1>
+            <i> Welcome {localStorage.getItem("username")}</i><br /><br />
+        </div>
+    )
+}
+
+function TodoSearch({ searchText, performSearch, clearSearch }) {
+    return (
+        <div>
+            <input id="search-input" placeholder="Search" className="search-input" type="text" onChange={performSearch} value={searchText} />
+            <button className="clear-button" onClick={clearSearch} disabled={!searchText}>Clear</button>
+        </div>
+    )
+}
+
 function Dashboard() {
     const [todos, setTodos] = useState([]);
+    const [searchText, setSearchText] = useState("");
 
     useEffect(() => {
         // Load existing todos from backend
@@ -64,18 +110,16 @@ function Dashboard() {
             });
     }
 
-    function performSearch(searchTerm) {
-        console.log("Searching for:", searchTerm || "all todos");
-
-        // Always use the search endpoint - backend handles empty searches properly
-        axios.get(`http://localhost:3000/todos/search?search=${encodeURIComponent(searchTerm || '')}`, {
+    function performSearch(e) {
+        const value = e.target.value;
+        setSearchText(value);
+        axios.get(`http://localhost:3000/todos/search?search=${encodeURIComponent(value || '')}`, {
             headers: {
                 token: localStorage.getItem("token")
             }
         })
             .then(res => {
                 setTodos(res.data.todos);
-                console.log("Search results:", res.data.todos);
             })
             .catch(err => {
                 console.error("Search error:", err);
@@ -84,56 +128,16 @@ function Dashboard() {
             });
     }
 
-    function TodoList({ todos, deleteTodo }) {
-        return (
-            <div id="todos" className="todos">
-                {todos.map(todo => (
-                    <div className="wrap" key={todo.id}>
-                        <p className="todo">{todo.title}</p>
-                        <button
-                            className="buttonTodo"
-                            onClick={() => deleteTodo(todo.id)}
-                        >
-                            Delete
-                        </button>
-                    </div>
-                ))}
-            </div>
-        )
+    function clearSearch() {
+        setSearchText("");
+        loadTodos();
     }
-
-    function TodoInput({ addTodo }) {
-        return (
-            <div>
-                <input id="todo-input" type="text" placeholder="Add a new todo" />
-                <button className="add-button" onClick={addTodo}>Add</button>
-            </div>
-        )
-    }
-
-    function TodoHeader() {
-        return (
-            <div>
-                <h1>Todo App</h1>
-                <i> Welcome {localStorage.getItem("username")}</i><br /><br />
-            </div>
-        )
-    }
-
-    function TodoSearch({ performSearch }) {
-        return (
-            <div>
-                <input id="search-input" placeholder="Search" className="search-input" type="text" onChange={e => performSearch(e.target.value)} />
-            </div>
-        )
-    }
-
 
     return (
         <>
             <TodoHeader />
             <TodoInput addTodo={addTodo} />
-            <TodoSearch performSearch={performSearch} />
+            <TodoSearch searchText={searchText} performSearch={performSearch} clearSearch={clearSearch} />
             <TodoList todos={todos} deleteTodo={deleteTodo} />
         </>
     )

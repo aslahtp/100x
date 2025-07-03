@@ -14,18 +14,30 @@
   outline-width: 1px;
 }
 
+.clear-button {
+  margin-left: 10px;
+  background-color: #e86c6c;
+  height: auto
+}
+
 .search-input {
 
-  margin-left: 10px;
+  margin-left: 30px;
   height: 20px;
-  width: 250px;
+  width: 200px;
   border-radius: 10px;
   border: 1px solid #fdfdfd1d;
   outline-width: 1px;
   outline-style: dashed;
   outline-color: #fdfdfd1d;
-  padding-left: 40px;
 }
+
+.search-button {
+  margin-left: 10px;
+  background-color: #70716be2;
+  height: auto
+}
+
 
 .add-button {
   margin-left: 10px;
