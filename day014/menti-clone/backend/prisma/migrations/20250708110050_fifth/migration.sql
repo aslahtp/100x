@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Question" ALTER COLUMN "option3" DROP NOT NULL,
+ALTER COLUMN "option4" DROP NOT NULL;
