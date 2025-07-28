@@ -1,38 +1,41 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router'
-function Signup() {
+function Signin() {
     const navigate = useNavigate()
-    const handleSignup = async () => {
+    const handleSignin = async () => {
         const username = document.getElementById('username').value
         const password = document.getElementById('password').value
         const isAdmin = document.getElementById('switch-component-on').checked
-        console.log(isAdmin)
         if (isAdmin === true) {
-            const response = await axios.post('http://localhost:3000/auth/adminsignup', {
+            const response = await axios.post('http://localhost:3000/auth/adminsignin', {
                 username,
                 password
             })
             console.log(response)
             if (response.status === 200) {
-                navigate('/signin')
+                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('isAdmin', true)
+                localStorage.setItem('username', username)
+                navigate('/dashboard')
             }
-
         } else {
-            const response = await axios.post('http://localhost:3000/auth/signup', {
+            const response = await axios.post('http://localhost:3000/auth/signin', {
                 username,
                 password
             })
             console.log(response)
             if (response.status === 200) {
-                navigate('/signin')
+                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('isAdmin', false)
+                localStorage.setItem('username', username)
+                navigate('/dashboard')
             }
         }
-
     }
     return (
         <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
             <div className="flex flex-col w-1/2 h-auto justify-center items-center bg-gray-100 gap-4 border-2 border-gray-500 rounded-md p-4">
-                <h1 className="text-4xl font-bold underline">Sign Up</h1>
+                <h1 className="text-4xl font-bold underline">Sign In</h1>
                 <div className="flex flex-col items-center justify-center">
                     <div className="inline-flex items-center gap-2">
 
@@ -47,11 +50,11 @@ function Signup() {
                     </div><br></br>
                     <input type="text" id="username" placeholder="Username" className="border-2 border-gray-300 rounded-md p-2" /><br></br>
                     <input type="password" id="password" placeholder="Password" className="border-2 border-gray-300 rounded-md p-2" /><br></br>
-                    <button type="submit" className="bg-blue-500 text-white rounded-md p-2" onClick={() => handleSignup()}>Signup</button>
+                    <button type="submit" className="bg-blue-500 text-white rounded-md p-2" onClick={() => handleSignin()}>Signin</button>
                 </div>
             </div>
         </div>
     )
 }
 
-export default Signup
+export default Signin

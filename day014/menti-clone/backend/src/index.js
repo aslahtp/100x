@@ -2,10 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { PrismaClient } = require('@prisma/client');
-const { authRoutes } = require('./auth');
-const { quizRoutes } = require('./quiz');
-const { questionRoutes } = require('./question');
-const { submissionRoutes } = require('./submission');
+const { authRoutes } = require('./services/auth');
+const { quizRoutes } = require('./routes/quiz');
+const { questionRoutes } = require('./routes/question');
+const { submissionRoutes } = require('./routes/submission');
+
 
 dotenv.config();
 
